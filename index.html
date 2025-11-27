@@ -285,7 +285,8 @@
         .modal-message {
             color: #4B5563;
             margin-bottom: 20px;
-            white-space: pre-wrap; /* เพื่อให้แสดงข้อความ Error ได้หลายบรรทัด */
+            white-space: pre-wrap;
+            text-align: left;
         }
         .modal-btn {
             background: #3B82F6;
@@ -389,7 +390,7 @@
     <div id="customModal" class="modal-overlay">
         <div class="modal-content">
             <h3 id="modalTitle" class="modal-title">แจ้งเตือน</h3>
-            <p id="modalMessage" class="modal-message">ข้อความ</p>
+            <div id="modalMessage" class="modal-message">ข้อความ</div>
             <button id="modalBtn" class="modal-btn">ตกลง</button>
         </div>
     </div>
@@ -435,7 +436,7 @@
             const LIFF_ID = '2008056238-g8p1R13n'; 
             const GAS_URL = 'https://script.google.com/macros/s/AKfycbzmdsVjgV-h_KFOCGpnt1HeZ1FdJTyMGKq9f4K0FALVR1iCd2ai-holzFH-4FTIqv6I/exec';
             const SHEET_ID = '1Fn3Rn8pO43tYOQrKI_-oSmc-UxL6hog3JXZ2cYjsGYI';
-            const SHEET_GID = '1799873089';
+            const SHEET_GID = '1940982599';
             const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&gid=${SHEET_GID}`;
             
             let lineUserId = '';
@@ -596,7 +597,7 @@
                 window.scrollTo(0, 0);
             });
             
-            // --- Form Submission Logic (UPDATED for Browser Push) ---
+            // --- Form Submission Logic (Always Push Message) ---
             form.addEventListener('submit', async function(event) {
                 event.preventDefault();
                 submitButton.disabled = true;
@@ -660,7 +661,7 @@ User ID: ${lineUserId.startsWith('GUEST') ? 'Guest' : lineUserId.substring(0, 5)
                     formData.append('q4', questions.q4); formData.append('a4', answers.a4);
                     formData.append('q5', questions.q5); formData.append('a5', answers.a5);
                     
-                    // *** IMPORTANT FIX: Send push parameters to GAS ***
+                    // *** Always request GAS to Push Message ***
                     formData.append('pushMessage', 'true');
                     formData.append('messageContent', summaryMessage);
 
@@ -675,7 +676,7 @@ User ID: ${lineUserId.startsWith('GUEST') ? 'Guest' : lineUserId.substring(0, 5)
                          throw new Error('Script returned non-success result');
                     }
 
-                    // --- ปรับปรุงส่วนตรวจสอบผลลัพธ์การส่ง LINE ---
+                    // --- 3. Success Handling ---
                     let modalTitleText = 'บันทึกสำเร็จ';
                     let modalBodyText = 'ข้อมูลถูกบันทึกและส่งเข้า LINE ของคุณเรียบร้อยแล้ว';
                     let isSuccess = true;
@@ -683,22 +684,33 @@ User ID: ${lineUserId.startsWith('GUEST') ? 'Guest' : lineUserId.substring(0, 5)
                     // ตรวจสอบสถานะ lineApiStatus จาก GAS
                     if (result.lineApiStatus && result.lineApiStatus !== 'Success' && result.lineApiStatus !== 'skipped') {
                         modalTitleText = 'บันทึกข้อมูลแล้ว (แต่ส่ง LINE ไม่ผ่าน)';
-                        modalBodyText = `บันทึกข้อมูลลง Sheet สำเร็จ แต่เกิดข้อผิดพลาดในการส่งข้อความ LINE:<br><br><code style="color:red; background:#fee; padding:2px 4px; border-radius:4px;">${result.lineApiStatus}</code><br><br>กรุณาตรวจสอบ Channel Access Token ใน Google Apps Script`;
+                        let errorMsg = result.lineApiStatus;
+                        let fixSuggestion = 'กรุณาตรวจสอบ Channel Access Token ใน Google Apps Script';
+
+                        if (errorMsg.includes("UrlFetchApp") || errorMsg.includes("script.external_request")) {
+                            fixSuggestion = '<strong>การแก้ไข:</strong> สคริปต์ยังไม่ได้รับอนุญาตให้ส่งข้อมูลออกภายนอก<br>1. ไปที่หน้าแก้ไข Google Apps Script<br>2. ลองกด Run ฟังก์ชัน pushLineMessage (หรือ doPost)<br>3. กดยอมรับสิทธิ์ (Review Permissions)<br>4. Deploy ใหม่ (New Deployment)';
+                        }
+
+                        modalBodyText = `บันทึกข้อมูลลง Sheet สำเร็จ แต่เกิดข้อผิดพลาดในการส่งข้อความ LINE:<br><br><code style="color:red; background:#fee; padding:2px 4px; border-radius:4px; display:block; margin-bottom:10px;">${errorMsg}</code><br>${fixSuggestion}`;
                         isSuccess = false;
                     }
 
-                    // Show Modal
-                    showModal(modalTitleText, modalBodyText, () => {
-                        if (isSuccess) {
-                            if (liff.isInClient()) {
-                                liff.closeWindow();
+                    // Show Modal or Close Window
+                    if (isSuccess && liff.isInClient()) {
+                        liff.closeWindow();
+                    } else {
+                        showModal(modalTitleText, modalBodyText, () => {
+                            if (isSuccess) {
+                                if (liff.isInClient()) {
+                                    liff.closeWindow();
+                                } else {
+                                    location.reload();
+                                }
                             } else {
                                 location.reload();
                             }
-                        } else {
-                            location.reload();
-                        }
-                    });
+                        });
+                    }
                     
                 } catch (error) {
                     console.error('Submission Error:', error);
