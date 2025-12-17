@@ -4,15 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>แบบฟอร์มตอบแบบสอบถาม</title>
-    <!-- 1. เพิ่ม LIFF SDK -->
     <script charset="utf-8" src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Sarabun:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Sarabun', sans-serif;
             background-color: #F7F7F7;
@@ -43,17 +38,13 @@
             font-weight: 700;
             margin: 0;
         }
-        .content {
-            padding: 40px 30px;
-        }
+        .content { padding: 40px 30px; }
         .page { display: none; animation: fadeIn 0.3s ease-in-out; }
         .page.active { display: block; }
-        
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
-
         .instruction-box {
             background: #F1F5F9;
             border: 1px solid #E2E8F0;
@@ -62,11 +53,7 @@
             margin-bottom: 32px;
             border-left: 4px solid #3B82F6;
         }
-        .instruction-box p {
-            margin: 0;
-            color: #475569;
-            font-size: 1rem;
-        }
+        .instruction-box p { margin: 0; color: #475569; font-size: 1rem; }
         .form-group { margin-bottom: 24px; }
         .form-label {
             display: block;
@@ -86,18 +73,12 @@
             background: white;
             color: #374151;
             cursor: pointer;
-            transition: all 0.3s ease;
             appearance: none;
             background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
             background-position: right 12px center;
             background-repeat: no-repeat;
             background-size: 16px;
             padding-right: 40px;
-        }
-        .dropdown select:focus {
-            outline: none;
-            border-color: #3B82F6;
-            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
         }
         .btn {
             padding: 14px 32px;
@@ -107,241 +88,106 @@
             font-weight: 500;
             cursor: pointer;
             transition: all 0.3s ease;
-            text-decoration: none;
-            display: inline-block;
             text-align: center;
             font-family: 'Sarabun', sans-serif;
         }
-        .btn:disabled {
-            background-color: #9CA3AF;
-            cursor: not-allowed;
-            transform: none !important;
-            box-shadow: none !important;
-        }
-        .btn-primary {
-            background: #3B82F6;
-            color: white;
-            width: 100%;
-        }
-        .btn-primary:hover:not(:disabled) {
-            background: #2563EB;
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
-        }
-        .btn-success {
-            background: #16A34A;
-            color: white;
-            width: 100%;
-        }
-        .btn-success:hover:not(:disabled) {
-            background: #15803D;
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(22, 163, 74, 0.3);
-        }
+        .btn:disabled { background-color: #9CA3AF; cursor: not-allowed; }
+        .btn-primary { background: #3B82F6; color: white; width: 100%; }
+        .btn-success { background: #16A34A; color: white; width: 100%; }
         .btn-back {
-            background: transparent;
-            color: #6B7280;
-            padding: 8px 16px;
-            font-size: 0.9rem;
-            margin-bottom: 24px;
-            border: 1px solid #E5E7EB;
-            width: auto;
+            background: transparent; color: #6B7280;
+            padding: 8px 16px; font-size: 0.9rem;
+            margin-bottom: 24px; border: 1px solid #E5E7EB; width: auto;
         }
-        .btn-back:hover {
-            background: #F9FAFB;
-            color: #374151;
-        }
-        /* Styles for Login Section */
-        .btn-line-login {
-            background-color: #06C755;
-            color: white;
-            width: 100%;
-            margin-bottom: 16px;
-        }
-        .btn-line-login:hover {
-            background-color: #05b34c;
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(6, 199, 85, 0.3);
-        }
-        .btn-guest {
-            background-color: transparent;
-            color: #6B7280;
-            border: 1px solid #E5E7EB;
-            width: 100%;
-        }
-        .btn-guest:hover {
-            background-color: #F9FAFB;
-        }
+        .btn-line-login { background-color: #06C755; color: white; width: 100%; margin-bottom: 16px; }
+        .btn-guest { background-color: transparent; color: #6B7280; border: 1px solid #E5E7EB; width: 100%; }
 
-        .problem-statement {
-            border: 1px solid #E5E7EB;
-            border-radius: 12px;
-            padding: 24px;
-            margin-bottom: 32px;
-            background: #FAFAFA;
-        }
-        .problem-statement h3 {
-            font-family: 'Poppins', sans-serif;
-            font-size: 1.25rem;
-            font-weight: 600;
-            margin-bottom: 16px;
-            color: #1F2937;
-        }
-        
-        #problem-description {
-            white-space: pre-wrap;
-            word-break: break-word;
-        }
-
-        .image-gallery {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 24px;
-            margin-top: 24px;
-        }
-        .image-gallery img {
-             width: 100%;
-             height: auto;
-             border-radius: 8px;
-             background-color: #f3f4f6;
-             object-fit: cover;
-             border: 1px solid #e5e7eb;
-        }
-        .image-caption {
-            font-style: italic;
-            font-size: 0.875rem;
-            color: #6B7280;
-            margin-top: 8px;
-            text-align: left;
-        }
+        /* ปรับแต่งช่องกรอกข้อความสำหรับมือถือ */
         .textarea {
             width: 100%;
-            padding: 14px 16px;
+            padding: 16px;
             border: 2px solid #E5E7EB;
             border-radius: 8px;
-            font-size: 1rem;
+            font-size: 16px; /* ป้องกันการซูมบน iOS */
             font-family: 'Sarabun', sans-serif;
             resize: vertical;
-            min-height: 100px;
-            transition: all 0.3s ease;
+            min-height: 160px; /* เพิ่มความสูงเริ่มต้น */
+            line-height: 1.6;
+            transition: border-color 0.3s ease;
         }
         .textarea:focus {
             outline: none;
             border-color: #3B82F6;
             box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
         }
-         .spinner {
-            border: 4px solid rgba(0,0,0,.1);
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            border-left-color: #3B82F6;
-            animation: spin 1s linear infinite;
+
+        .problem-statement {
+            border: 1px solid #E5E7EB; border-radius: 12px;
+            padding: 24px; margin-bottom: 32px; background: #FAFAFA;
         }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+        .problem-statement h3 {
+            font-family: 'Poppins', sans-serif; font-size: 1.25rem;
+            font-weight: 600; margin-bottom: 16px; color: #1F2937;
         }
+        .image-gallery {
+            display: grid; grid-template-columns: 1fr; gap: 24px; margin-top: 24px;
+        }
+        .image-gallery img {
+             width: 100%; height: auto; border-radius: 8px;
+             background-color: #f3f4f6; object-fit: cover; border: 1px solid #e5e7eb;
+        }
+        .image-caption {
+            font-style: italic; font-size: 0.875rem; color: #6B7280;
+            margin-top: 8px; text-align: left;
+        }
+        .spinner {
+            border: 4px solid rgba(0,0,0,.1); width: 36px; height: 36px;
+            border-radius: 50%; border-left-color: #3B82F6; animation: spin 1s linear infinite;
+        }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
         
-        /* Custom Modal Styles */
+        /* Modal Styles */
         .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s ease;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.5); display: flex;
+            align-items: center; justify-content: center; z-index: 1000;
+            opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
         }
-        .modal-overlay.active {
-            opacity: 1;
-            pointer-events: auto;
-        }
+        .modal-overlay.active { opacity: 1; pointer-events: auto; }
         .modal-content {
-            background: white;
-            padding: 30px;
-            border-radius: 12px;
-            width: 90%;
-            max-width: 400px;
-            text-align: center;
-            transform: translateY(20px);
-            transition: transform 0.3s ease;
+            background: white; padding: 30px; border-radius: 12px;
+            width: 90%; max-width: 400px; text-align: center;
         }
-        .modal-overlay.active .modal-content {
-            transform: translateY(0);
-        }
-        .modal-title {
-            font-size: 1.25rem;
-            font-weight: 700;
-            margin-bottom: 10px;
-            color: #1F2937;
-        }
-        .modal-message {
-            color: #4B5563;
-            margin-bottom: 20px;
-            white-space: pre-wrap;
-            text-align: left;
-        }
-        .modal-btn {
-            background: #3B82F6;
-            color: white;
-            border: none;
-            padding: 10px 24px;
-            border-radius: 6px;
-            font-weight: 500;
-            cursor: pointer;
-            width: 100%;
-        }
-        .modal-btn:hover { background: #2563EB; }
+        .modal-btn { background: #3B82F6; color: white; border: none; padding: 10px 24px; border-radius: 6px; width: 100%; }
 
         @media (max-width: 768px) {
-            .container { margin: 10px; border-radius: 12px; }
-            .header { padding: 30px 20px; }
-            .header h1 { font-size: 2rem; }
-            .content { padding: 30px 20px; }
-        }
-        @media (max-width: 480px) {
-            .header h1 { font-size: 1.75rem; }
-            .btn { width: 100%; padding: 14px; }
+            .container { margin: 10px; }
+            .header h1 { font-size: 1.8rem; }
+            .content { padding: 20px; }
         }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <div class="header">
-            <h1>แบบฟอร์มตอบแบบสอบถาม</h1>
-        </div>
+        <div class="header"><h1>แบบฟอร์มตอบแบบสอบถาม</h1></div>
         <div class="content">
             <form id="questionnaireForm">
-                <!-- Page 1: Participant Information -->
+                <!-- Page 1: Login & Participant Selection -->
                 <div id="page1" class="page active">
                      <div class="instruction-box">
-                        <p>โปรดอ่านคำชี้แจงและตอบคำถามต่อไปนี้ตามความคิดเห็นของท่าน เพื่อนำข้อมูลไปใช้ในการพัฒนาต่อไป ขอขอบคุณในความร่วมมือ</p>
+                        <p>โปรดอ่านคำชี้แจงและตอบคำถามต่อไปนี้ตามความคิดเห็นของท่าน</p>
                     </div>
                     
                     <div id="loader" style="text-align: center; padding: 2rem 0;">
                         <div class="spinner" style="margin: 0 auto;"></div>
-                        <p style="margin-top: 1rem; color: #6b7280;">กำลังเชื่อมต่อและโหลดข้อมูล...</p>
+                        <p style="margin-top: 1rem; color: #6b7280;">กำลังโหลดข้อมูล...</p>
                     </div>
 
-                    <!-- ส่วน Login สำหรับ Desktop -->
                     <div id="loginSection" style="display: none; text-align: center; padding: 20px 0;">
                         <h3 style="margin-bottom: 16px;">กรุณาเข้าสู่ระบบ</h3>
-                        <p style="margin-bottom: 24px; color: #6B7280;">จำเป็นต้องเข้าสู่ระบบ LINE เพื่อยืนยันตัวตน และเพื่อให้ระบบสามารถส่งผลการตอบกลับไปยังไลน์ของคุณได้</p>
-                        <button type="button" id="lineLoginBtn" class="btn btn-line-login">
-                            เข้าสู่ระบบด้วย LINE
-                        </button>
-                        <!-- ซ่อนปุ่ม Guest เพราะเราต้องการ User ID จริง -->
-                        <button type="button" id="guestLoginBtn" class="btn btn-guest" style="font-size: 0.9em; display: none;">
-                            ทดสอบระบบ (Guest Mode)
-                        </button>
+                        <button type="button" id="lineLoginBtn" class="btn btn-line-login">เข้าสู่ระบบด้วย LINE</button>
+                        <button type="button" id="guestLoginBtn" class="btn btn-guest" style="font-size: 0.9em; display: none;">ทดสอบระบบ (Guest)</button>
                     </div>
 
                     <div id="participantSection" style="display: none;">
@@ -360,7 +206,7 @@
                     </div>
                 </div>
 
-                <!-- Page 2: Questions -->
+                <!-- Page 2: Content (5 Images + 3 Questions) -->
                 <div id="page2" class="page">
                     <button type="button" id="backButton" class="btn btn-back">← กลับ</button>
                     <div class="problem-statement">
@@ -371,14 +217,14 @@
                             <div id="img-container-1" style="display:none;"><img id="image1" src="" alt="ภาพที่ 1" onerror="this.style.display='none'"><p id="image1-caption" class="image-caption"></p></div>
                             <div id="img-container-2" style="display:none;"><img id="image2" src="" alt="ภาพที่ 2" onerror="this.style.display='none'"><p id="image2-caption" class="image-caption"></p></div>
                             <div id="img-container-3" style="display:none;"><img id="image3" src="" alt="ภาพที่ 3" onerror="this.style.display='none'"><p id="image3-caption" class="image-caption"></p></div>
+                            <div id="img-container-4" style="display:none;"><img id="image4" src="" alt="ภาพที่ 4" onerror="this.style.display='none'"><p id="image4-caption" class="image-caption"></p></div>
+                            <div id="img-container-5" style="display:none;"><img id="image5" src="" alt="ภาพที่ 5" onerror="this.style.display='none'"><p id="image5-caption" class="image-caption"></p></div>
                         </div>
                     </div>
                     
-                    <div class="form-group"><label id="question1-label" for="answer1" class="form-label"></label><textarea id="answer1" class="textarea" placeholder="กรอกคำตอบของคุณที่นี่..."></textarea></div>
-                    <div class="form-group"><label id="question2-label" for="answer2" class="form-label"></label><textarea id="answer2" class="textarea" placeholder="กรอกคำตอบของคุณที่นี่..."></textarea></div>
-                    <div class="form-group"><label id="question3-label" for="answer3" class="form-label"></label><textarea id="answer3" class="textarea" placeholder="กรอกคำตอบของคุณที่นี่..."></textarea></div>
-                    <div class="form-group"><label id="question4-label" for="answer4" class="form-label"></label><textarea id="answer4" class="textarea" placeholder="กรอกคำตอบของคุณที่นี่..."></textarea></div>
-                    <div class="form-group"><label id="question5-label" for="answer5" class="form-label"></label><textarea id="answer5" class="textarea" placeholder="กรอกคำตอบของคุณที่นี่..."></textarea></div>
+                    <div class="form-group"><label id="question1-label" for="answer1" class="form-label"></label><textarea id="answer1" class="textarea" placeholder="กรอกคำตอบของคุณ..."></textarea></div>
+                    <div class="form-group"><label id="question2-label" for="answer2" class="form-label"></label><textarea id="answer2" class="textarea" placeholder="กรอกคำตอบของคุณ..."></textarea></div>
+                    <div class="form-group"><label id="question3-label" for="answer3" class="form-label"></label><textarea id="answer3" class="textarea" placeholder="กรอกคำตอบของคุณ..."></textarea></div>
 
                     <button type="submit" id="submitButton" class="btn btn-success">ส่งคำตอบ</button>
                 </div>
@@ -386,11 +232,11 @@
         </div>
     </div>
 
-    <!-- Custom Modal -->
+    <!-- Modal -->
     <div id="customModal" class="modal-overlay">
         <div class="modal-content">
-            <h3 id="modalTitle" class="modal-title">แจ้งเตือน</h3>
-            <div id="modalMessage" class="modal-message">ข้อความ</div>
+            <h3 id="modalTitle" class="modal-title"></h3>
+            <div id="modalMessage" class="modal-message"></div>
             <button id="modalBtn" class="modal-btn">ตกลง</button>
         </div>
     </div>
@@ -404,10 +250,8 @@
 
         function showModal(title, message, callback) {
             modalTitle.textContent = title;
-            // Allow HTML in message for line breaks
             modalMessage.innerHTML = message;
             modal.classList.add('active');
-            
             modalBtn.onclick = function() {
                 modal.classList.remove('active');
                 if (callback) callback();
@@ -415,7 +259,7 @@
         }
 
         async function main() {
-            // --- Elements ---
+            // Elements
             const page1 = document.getElementById('page1');
             const page2 = document.getElementById('page2');
             const nextButton = document.getElementById('nextButton');
@@ -426,13 +270,11 @@
             const loader = document.getElementById('loader');
             const participantSection = document.getElementById('participantSection');
             const submitButton = document.getElementById('submitButton');
-            
-            // Login Elements
             const loginSection = document.getElementById('loginSection');
             const lineLoginBtn = document.getElementById('lineLoginBtn');
             const guestLoginBtn = document.getElementById('guestLoginBtn');
 
-            // --- Configuration ---
+            // Config
             const LIFF_ID = '2008056238-g8p1R13n'; 
             const GAS_URL = 'https://script.google.com/macros/s/AKfycbzmdsVjgV-h_KFOCGpnt1HeZ1FdJTyMGKq9f4K0FALVR1iCd2ai-holzFH-4FTIqv6I/exec';
             const SHEET_ID = '1Fn3Rn8pO43tYOQrKI_-oSmc-UxL6hog3JXZ2cYjsGYI';
@@ -441,48 +283,29 @@
             
             let lineUserId = '';
             let sheetData = [];
-            let isLiffMode = false;
 
-            // --- Initialize LIFF Logic ---
+            // Init App
             const initializeApp = async () => {
                 try {
-                    // Fetch Data first
                     await fetchSheetData();
-
                     if (typeof liff !== 'undefined') {
                         await liff.init({ liffId: LIFF_ID });
-                        
-                        // Case 1: Already Logged In
                         if (liff.isLoggedIn()) {
                             const profile = await liff.getProfile();
                             lineUserId = profile.userId;
-                            isLiffMode = true;
                             showParticipantSection();
-                        } 
-                        // Case 2: Not Logged In
-                        else {
+                        } else {
                             loader.style.display = 'none';
                             loginSection.style.display = 'block';
-                            
-                            lineLoginBtn.onclick = () => {
-                                // Redirect to LINE Login
-                                if (!liff.isInClient()) {
-                                    liff.login(); 
-                                } else {
-                                    liff.login();
-                                }
-                            };
-                            
+                            lineLoginBtn.onclick = () => liff.login();
                             guestLoginBtn.onclick = () => {
                                 lineUserId = 'GUEST-' + Math.floor(Math.random() * 100000);
                                 showParticipantSection();
                             }
                         }
-                    } else {
-                        throw new Error("LIFF SDK not loaded");
-                    }
+                    } else { throw new Error("LIFF SDK not loaded"); }
                 } catch (error) {
-                    console.warn('LIFF Init failed or Error:', error);
+                    console.warn('Init Error:', error);
                     lineUserId = 'WEB-ERROR-USER';
                     showParticipantSection();
                 }
@@ -494,31 +317,39 @@
                 participantSection.style.display = 'block';
             };
 
-            // --- Helper Function for Google Drive Links ---
             function convertGoogleDriveLink(url) {
-                if (!url) return '';
-                if (!url.includes('drive.google.com')) return url;
+                if (!url || !url.includes('drive.google.com')) return url || '';
                 const match = url.match(/drive\.google\.com.*[?&]id=([a-zA-Z0-9_-]+)|file\/d\/([a-zA-Z0-9_-]+)/);
                 const fileId = match ? (match[1] || match[2]) : null;
                 return fileId ? `https://lh3.googleusercontent.com/d/${fileId}` : '';
             }
 
-            // --- Fetch and Process Google Sheet Data ---
             async function fetchSheetData() {
                 try {
                     const response = await fetch(url);
                     const text = await response.text();
                     const jsonString = text.substring(47).slice(0, -2);
                     const json = JSON.parse(jsonString);
-                    const rows = json.table.rows;
-
-                    sheetData = rows.map(row => ({
-                        A: row.c[0]?.v || '', B: row.c[1]?.v || '', C: row.c[2]?.v || '', D: row.c[3]?.v || '',
-                        E: row.c[4]?.v || '', F: row.c[5]?.v || '', G: row.c[6]?.v || '', H: row.c[7]?.v || '',
-                        I: row.c[8]?.v || '', J: row.c[9]?.v || '', K: row.c[10]?.v || '', L: row.c[11]?.v || '', M: row.c[12]?.v || '', N: row.c[13]?.v || '',
+                    // Map Columns: A=Name, B=Title, C=Desc, D-M=Images, N-P=Questions
+                    sheetData = json.table.rows.map(row => ({
+                        A: row.c[0]?.v || '', // Name
+                        B: row.c[1]?.v || '', // Title
+                        C: row.c[2]?.v || '', // Desc
+                        D: row.c[3]?.v || '', // Img1
+                        E: row.c[4]?.v || '', // Cap1
+                        F: row.c[5]?.v || '', // Img2
+                        G: row.c[6]?.v || '', // Cap2
+                        H: row.c[7]?.v || '', // Img3
+                        I: row.c[8]?.v || '', // Cap3
+                        J: row.c[9]?.v || '', // Img4
+                        K: row.c[10]?.v || '', // Cap4
+                        L: row.c[11]?.v || '', // Img5
+                        M: row.c[12]?.v || '', // Cap5
+                        N: row.c[13]?.v || '', // Q1
+                        O: row.c[14]?.v || '', // Q2
+                        P: row.c[15]?.v || ''  // Q3
                     }));
 
-                    // Populate Dropdown
                     let hasOptions = false;
                     sheetData.forEach((row, index) => {
                         if (row.A) { 
@@ -529,62 +360,48 @@
                             hasOptions = true;
                         }
                     });
-                    
-                    if (!hasOptions) throw new Error("No participants found");
-
+                    if (!hasOptions) throw new Error("No data");
                 } catch (error) {
-                    console.error('Error fetching Google Sheet data:', error);
-                    loader.innerHTML = `
-                        <p style="color: #EF4444; font-weight: bold;">เกิดข้อผิดพลาดในการโหลดข้อมูล</p>
-                        <button class="btn btn-back" onclick="location.reload()" style="margin-top:10px;">ลองใหม่อีกครั้ง</button>
-                    `;
+                    console.error('Fetch Error:', error);
+                    loader.innerHTML = `<p style="color:red">โหลดข้อมูลไม่สำเร็จ</p><button class="btn btn-back" onclick="location.reload()">ลองใหม่</button>`;
                 }
             }
             
-            // --- Update Page 2 Content ---
             function updateProblemContent(rowIndex) {
                 const data = sheetData[rowIndex];
                 if (!data) return;
                 document.getElementById('problem-lesson').textContent = data.B ? `คำถามชุดที่ ${data.B}` : 'ไม่มีหัวข้อ';
                 document.getElementById('problem-description').textContent = data.C || '';
                 
-                // Handle Images
                 const setupImage = (id, url, captionId, captionText, containerId) => {
                     const img = document.getElementById(id);
                     const container = document.getElementById(containerId);
                     const convertedUrl = convertGoogleDriveLink(url);
-                    
                     if (convertedUrl) {
-                        img.src = convertedUrl;
-                        img.style.display = 'block';
-                        container.style.display = 'block';
+                        img.src = convertedUrl; container.style.display = 'block';
                         document.getElementById(captionId).textContent = captionText;
-                    } else {
-                        container.style.display = 'none';
-                    }
+                    } else { container.style.display = 'none'; }
                 };
 
+                // Display 5 Images
                 setupImage('image1', data.D, 'image1-caption', data.E, 'img-container-1');
                 setupImage('image2', data.F, 'image2-caption', data.G, 'img-container-2');
                 setupImage('image3', data.H, 'image3-caption', data.I, 'img-container-3');
+                setupImage('image4', data.J, 'image4-caption', data.K, 'img-container-4');
+                setupImage('image5', data.L, 'image5-caption', data.M, 'img-container-5');
 
-                document.getElementById('question1-label').textContent = data.J || 'คำถามข้อที่ 1';
-                document.getElementById('question2-label').textContent = data.K || 'คำถามข้อที่ 2';
-                document.getElementById('question3-label').textContent = data.L || 'คำถามข้อที่ 3';
-                document.getElementById('question4-label').textContent = data.M || 'คำถามข้อที่ 4';
-                document.getElementById('question5-label').textContent = data.N || 'คำถามข้อที่ 5';
+                // Display 3 Questions
+                document.getElementById('question1-label').textContent = data.N || 'คำถามข้อที่ 1';
+                document.getElementById('question2-label').textContent = data.O || 'คำถามข้อที่ 2';
+                document.getElementById('question3-label').textContent = data.P || 'คำถามข้อที่ 3';
             }
 
-            // --- Navigation Logic ---
             nextButton.addEventListener('click', function() {
-                const selectedIndex = participantDropdown.value;
-                if (selectedIndex === "") {
+                if (participantDropdown.value === "") {
                     errorMessage.style.display = 'block';
-                    participantDropdown.parentElement.style.animation = "shake 0.5s";
-                    setTimeout(() => participantDropdown.parentElement.style.animation = "", 500);
                 } else {
                     errorMessage.style.display = 'none';
-                    updateProblemContent(selectedIndex);
+                    updateProblemContent(participantDropdown.value);
                     page1.classList.remove('active');
                     page2.classList.add('active');
                     window.scrollTo(0, 0);
@@ -597,130 +414,82 @@
                 window.scrollTo(0, 0);
             });
             
-            // --- Form Submission Logic (Always use client-side send) ---
             form.addEventListener('submit', async function(event) {
                 event.preventDefault();
                 submitButton.disabled = true;
                 submitButton.textContent = 'กำลังส่งข้อมูล...';
 
-                // --- 1. Gather Data ---
                 const selectedOption = participantDropdown.options[participantDropdown.selectedIndex];
                 const participantName = selectedOption ? selectedOption.textContent : 'ไม่ระบุ';
-                const selectedIndex = participantDropdown.value; // ดึง index เพื่อเข้าถึงข้อมูลใน sheetData
-                const currentRow = sheetData[selectedIndex];     // ดึงข้อมูลแถวที่เลือกมาใช้งาน
                 const lesson = document.getElementById('problem-lesson').textContent;
                 
-                const questions = {
-                    q1: document.getElementById('question1-label').textContent,
-                    q2: document.getElementById('question2-label').textContent,
-                    q3: document.getElementById('question3-label').textContent,
-                    q4: document.getElementById('question4-label').textContent,
-                    q5: document.getElementById('question5-label').textContent,
-                };
+                // Get 3 Questions
+                const q1 = document.getElementById('question1-label').textContent;
+                const q2 = document.getElementById('question2-label').textContent;
+                const q3 = document.getElementById('question3-label').textContent;
 
-                const answers = {
-                    a1: document.getElementById('answer1').value.trim() || '-',
-                    a2: document.getElementById('answer2').value.trim() || '-',
-                    a3: document.getElementById('answer3').value.trim() || '-',
-                    a4: document.getElementById('answer4').value.trim() || '-',
-                    a5: document.getElementById('answer5').value.trim() || '-',
-                };
+                // Get 3 Answers
+                const a1 = document.getElementById('answer1').value.trim() || '-';
+                const a2 = document.getElementById('answer2').value.trim() || '-';
+                const a3 = document.getElementById('answer3').value.trim() || '-';
 
                 const timestamp = new Date().toLocaleString('th-TH', { timeZone: 'Asia/Bangkok' });
                 
-                // Prepare Message with Short Headers
                 const summaryMessage = `📝 สรุปผลการตอบแบบสอบถาม
 -------------------------
 ผู้ตอบ: ${participantName}
-User ID: ${lineUserId.startsWith('GUEST') ? 'Guest' : lineUserId.substring(0, 5) + '...'}
+ID: ${lineUserId.startsWith('GUEST') ? 'Guest' : lineUserId.substring(0, 5) + '...'}
 เวลา: ${timestamp}
-คำถามชุดที่: ${lesson}
+${lesson}
 -------------------------
 1. จงระบุเจนารมณ์...
-ตอบ: ${answers.a1}
+ตอบ: ${a1}
 
 2. ในฐานะ...
-ตอบ: ${answers.a2}
+ตอบ: ${a2}
 
 3. จากสถานการณ์...
-ตอบ: ${answers.a3}
+ตอบ: ${a3}
+-------------------------`;
 
-4. ${questions.q4}
-ตอบ: ${answers.a4}
-
-5. ${questions.q5}
-ตอบ: ${answers.a5}
--------------------------
-ขอบคุณที่ร่วมตอบแบบสอบถาม`;
-
-                // --- 2. Send to GAS (Data Only) ---
                 try {
                     const formData = new FormData();
                     formData.append('timestamp', timestamp);
                     formData.append('lineUserId', lineUserId);
                     formData.append('participant', participantName);
                     formData.append('lesson', lesson);
-                    formData.append('q1', questions.q1); formData.append('a1', answers.a1);
-                    formData.append('q2', questions.q2); formData.append('a2', answers.a2);
-                    formData.append('q3', questions.q3); formData.append('a3', answers.a3);
-                    formData.append('q4', questions.q4); formData.append('a4', answers.a4);
-                    formData.append('q5', questions.q5); formData.append('a5', answers.a5);
-                    
-                    // *** Force Client-side Send ***
-                    // ปิดการส่ง Push จาก Server (GAS) เพื่อไม่ให้ข้อความซ้ำหรือเป็นแบบ Bot
+                    formData.append('q1', q1); formData.append('a1', a1);
+                    formData.append('q2', q2); formData.append('a2', a2);
+                    formData.append('q3', q3); formData.append('a3', a3);
                     formData.append('pushMessage', 'false');
                     formData.append('messageContent', summaryMessage);
 
-                    const response = await fetch(GAS_URL, {
-                        method: 'POST',
-                        body: formData,
-                    });
-                    
+                    const response = await fetch(GAS_URL, { method: 'POST', body: formData });
                     const result = await response.json();
+                    if (result.result !== 'success') throw new Error('Script Error');
 
-                    if (result.result !== 'success') {
-                         throw new Error('Script returned non-success result');
-                    }
-
-                    // --- 3. Try Sending Message via LIFF (Client-side) ---
                     try {
-                        // พยายามส่งข้อความด้วย liff.sendMessages ในทุกกรณี
                         await liff.sendMessages([{ type: 'text', text: summaryMessage }]);
-                        
-                        if (liff.isInClient()) {
-                            liff.closeWindow();
-                        } else {
-                            showModal('บันทึกสำเร็จ', 'ส่งข้อมูลและข้อความเรียบร้อยแล้ว', () => {
-                                location.reload();
-                            });
-                        }
+                        if (liff.isInClient()) liff.closeWindow();
+                        else showModal('สำเร็จ', 'ส่งข้อมูลเรียบร้อย', () => location.reload());
                     } catch (msgError) {
-                        console.error("LIFF Send Error:", msgError);
-                        let errorMsg = 'บันทึกข้อมูลลง Sheet สำเร็จ<br>แต่ไม่สามารถส่งข้อความเข้าแชทได้';
-                        
-                        // เพิ่มคำอธิบายกรณีเป็น Browser
-                        if (!liff.isInClient()) {
-                            errorMsg += '<br><br><small style="color:red">สาเหตุ: liff.sendMessages ไม่รองรับการทำงานบน External Browser</small>';
-                        }
-                        
-                        showModal('บันทึกสำเร็จ (มีข้อแจ้งเตือน)', errorMsg, () => {
+                        let errorMsg = 'บันทึกสำเร็จ แต่ส่งเข้าแชทไม่ได้';
+                        if (!liff.isInClient()) errorMsg += '<br><small style="color:red">Browser ไม่รองรับการส่งข้อความเข้าแชทอัตโนมัติ</small>';
+                        showModal('แจ้งเตือน', errorMsg, () => {
                             if (liff.isInClient()) liff.closeWindow();
                             else location.reload();
                         });
                     }
-                    
                 } catch (error) {
                     console.error('Submission Error:', error);
-                    showModal('เกิดข้อผิดพลาด', 'ไม่สามารถบันทึกข้อมูลได้ โปรดลองอีกครั้ง');
+                    showModal('ผิดพลาด', 'บันทึกไม่สำเร็จ โปรดลองใหม่');
                     submitButton.disabled = false;
                     submitButton.textContent = 'ส่งคำตอบ';
                 }
             });
 
-            // Start App
             initializeApp();
         }
-
         document.addEventListener('DOMContentLoaded', main);
     </script>
 </body>
