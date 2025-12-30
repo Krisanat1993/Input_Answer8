@@ -241,6 +241,14 @@
         #problem-description {
             white-space: pre-wrap;
             word-break: break-word;
+            min-height: 50px; /* เพิ่มความสูงขั้นต่ำเพื่อให้เห็นพื้นที่ */
+            color: #374151; /* กำหนดสีให้ชัดเจน */
+        }
+        #problem-lesson {
+             font-weight: 500; 
+             margin-bottom: 1rem; 
+             color: #1F2937;
+             min-height: 24px;
         }
 
         .image-gallery {
@@ -424,8 +432,8 @@
                     <div class="problem-statement">
                         <h3>โจทย์ปัญหา</h3>
                         <!-- จุดที่จะถูกแทนที่ด้วยข้อมูลจาก Sheet -->
-                        <h4 id="problem-lesson" style="font-weight: 500; margin-bottom: 1rem; color: #374151;"></h4>
-                        <p id="problem-description"></p>
+                        <h4 id="problem-lesson">รอโหลดข้อมูลหัวข้อ...</h4>
+                        <p id="problem-description">รอโหลดข้อมูลรายละเอียด...</p>
                         
                         <div class="image-gallery">
                             <!-- Image 1 -->
@@ -736,8 +744,22 @@
                 const lessonElem = document.getElementById('problem-lesson');
                 const descElem = document.getElementById('problem-description');
                 
-                if (lessonElem) lessonElem.textContent = data.B ? `คำถามชุดที่ ${data.B}` : 'ไม่มีหัวข้อ';
-                if (descElem) descElem.textContent = data.C || '';
+                // ใช้ TextContent แทนการปล่อยว่าง และตั้งค่า style.display='block' เผื่อไว้
+                if (lessonElem) {
+                     lessonElem.textContent = data.B ? `คำถามชุดที่ ${data.B}` : 'ไม่ได้ระบุหัวข้อ';
+                     lessonElem.style.display = 'block';
+                }
+                
+                if (descElem) {
+                     if (data.C && data.C.trim() !== "") {
+                        descElem.textContent = data.C;
+                        descElem.style.color = "#374151"; // สีปกติ
+                     } else {
+                        descElem.textContent = "(ไม่พบรายละเอียดโจทย์ปัญหา)";
+                        descElem.style.color = "#9CA3AF"; // สีจางเมื่อไม่มีข้อมูล
+                     }
+                     descElem.style.display = 'block';
+                }
                 
                 // Handle Images (1-5)
                 const setupImage = (id, url, captionId, captionText, containerId) => {
@@ -871,15 +893,15 @@ User ID: ${lineUserId.startsWith('GUEST') ? 'Guest' : lineUserId.substring(0, 5)
 เวลา: ${timestamp}
 หัวข้อ: ${lesson}
 -------------------------
-1. ${questions.q1}
+1. จงระบุเจนารมณ์...
 ตอบ: 
 ${answers.a1}
 
-2. ${questions.q2}
+2. ในฐานะ...
 ตอบ: 
 ${answers.a2}
 
-3. ${questions.q3}
+3. จากสถานการณ์...
 ตอบ: 
 ${answers.a3}
 -------------------------
