@@ -142,7 +142,7 @@
         }
         .btn-success:hover:not(:disabled) {
             background: #15803D;
-            transform: translateY(-10px);
+            transform: translateY(-1px);
             box-shadow: 0 4px 12px rgba(22, 163, 74, 0.3);
         }
         .btn-back {
@@ -159,6 +159,14 @@
             color: #374151;
         }
         
+        /* สไตล์สำหรับปุ่มส่งคำตอบ เพื่อป้องกันการกดพลาด */
+        #submitButton {
+            margin-top: 60px; /* เพิ่มระยะห่างด้านบนให้มากขึ้น */
+            padding: 16px 32px;
+            font-size: 1.1rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
         /* New Styles for Dynamic Inputs */
         .btn-add {
             background-color: #F3F4F6;
@@ -893,15 +901,15 @@ User ID: ${lineUserId.startsWith('GUEST') ? 'Guest' : lineUserId.substring(0, 5)
 เวลา: ${timestamp}
 หัวข้อ: ${lesson}
 -------------------------
-1. จงระบุเจนารมณ์...
+1. ${questions.q1}
 ตอบ: 
 ${answers.a1}
 
-2. ในฐานะ...
+2. ${questions.q2}
 ตอบ: 
 ${answers.a2}
 
-3. จากสถานการณ์...
+3. ${questions.q3}
 ตอบ: 
 ${answers.a3}
 -------------------------
